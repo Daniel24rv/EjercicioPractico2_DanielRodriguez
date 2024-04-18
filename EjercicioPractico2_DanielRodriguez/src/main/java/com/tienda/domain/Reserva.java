@@ -2,27 +2,30 @@ package com.tienda.domain;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
-import java.util.List;
 import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "categoria")
+@Table(name="producto")
 public class Reserva implements Serializable {
-
     private static final long serialVersionUID = 1L;
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_categoria")
-    private Long idCategoria;
+    @Column(name="id_producto")
+    private Long idProducto;
+    //private Long idCategoria;  ya no se usa por el @manyToOne
     private String descripcion;
+    private String detalle;
+    private double precio;
+    private int existencias;
     private String rutaImagen;
     private boolean activo;
 
-    @OneToMany
-    @JoinColumn(name = "id_categoria", updatable = false)
-    List<Producto> productos;
+    @ManyToOne
+    @JoinColumn(name="id_categoria")
+    Empleado categoria;
+
 
     public Reserva() {
     }
@@ -31,5 +34,5 @@ public class Reserva implements Serializable {
         this.descripcion = descripcion;
         this.activo = activo;
     }
-
+    
 }

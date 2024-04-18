@@ -1,6 +1,6 @@
 package com.tienda.controller;
 
-import com.tienda.domain.Producto;
+import com.tienda.domain.Reserva;
 import com.tienda.domain.Item;
 import com.tienda.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
-import com.tienda.service.ProductoService;
+import com.tienda.service.ReservaService;
 
 @Controller
 
@@ -18,7 +18,7 @@ public class CarritoController {
     @Autowired
     private ItemService itemService;
     @Autowired
-    private ProductoService productoService;
+    private ReservaService productoService;
 
     @GetMapping("/")
     private String listado(Model model) {
@@ -46,7 +46,7 @@ public class CarritoController {
     public ModelAndView agregarItem(Model model, Item item) {
         Item item2 = itemService.get(item);
         if (item2 == null) {
-            Producto producto = productoService.getProducto(item);
+            Reserva producto = productoService.getProducto(item);
             item2 = new Item(producto);
 
         }

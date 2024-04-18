@@ -1,14 +1,14 @@
 package com.tienda.controller;
 
-import com.tienda.domain.Reserva;
+import com.tienda.domain.Empleado;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import com.tienda.service.ProductoService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import com.tienda.service.EmpleadoService;
 import com.tienda.service.ReservaService;
 
 @Controller
@@ -16,9 +16,9 @@ import com.tienda.service.ReservaService;
 public class PruebasController {
 
     @Autowired
-    private ProductoService productoService;
+    private ReservaService productoService;
     @Autowired
-    private ReservaService categoriaService;
+    private EmpleadoService categoriaService;
 
     @GetMapping("/listado")
     public String listado(Model model) {
@@ -31,7 +31,7 @@ public class PruebasController {
     }
 
     @GetMapping("/listado/{idCategoria}")
-    public String listado(Model model, Reserva categoria) {
+    public String listado(Model model, Empleado categoria) {
         var productos = categoriaService.getCategoria(categoria).getProductos();
         var categorias = categoriaService.getCategorias(false);
         model.addAttribute("productos", productos);

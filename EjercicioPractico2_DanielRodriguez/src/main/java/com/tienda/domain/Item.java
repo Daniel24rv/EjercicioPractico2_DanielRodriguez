@@ -5,14 +5,14 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class Item extends Producto {
+public class Item extends Reserva {
 
     private int cantidad;
 
     public Item() {
     }
 
-    public Item(Producto producto) {
+    public Item(Reserva producto) {
         super.setIdProducto(producto.getIdProducto());
         super.setCategoria(producto.getCategoria());
         super.setDescripcion(producto.getDescripcion());

@@ -5,15 +5,24 @@ import java.util.List;
 
 public interface ReservaService {
 
-    public List<Reserva> getCategorias(boolean activo);
+    public List<Reserva> getProductos(boolean activo);
 
-    // Se obtiene un Reserva, a partir del id de un categoria
-    public Reserva getCategoria(Reserva categoria);
-    
-    // Se inserta un nuevo categoria si el id del categoria esta vacío
-    // Se actualiza un categoria si el id del categoria NO esta vacío
-    public void save(Reserva categoria);
-    
-    // Se elimina el categoria que tiene el id pasado por parámetro
-    public void delete(Reserva categoria);
+    // Se obtiene un Reserva, a partir del id de un producto
+    public Reserva getProducto(Reserva producto);
+
+    // Se inserta un nuevo producto si el id del producto esta vacío
+    // Se actualiza un producto si el id del producto NO esta vacío
+    public void save(Reserva producto);
+
+    // Se elimina el producto que tiene el id pasado por parámetro
+    public void delete(Reserva producto);
+
+    public List<Reserva> findByPrecioBetweenOrderByDescripcion(double precioInf, double precioSup);
+
+    //Lista de productos utilizando consultas con JPQL    
+    public List<Reserva> metodoJPQL(double precioInf, double precioSup);
+
+    //Lista de productos utilizando consultas con SQL Nativo
+    public List<Reserva> metodoNativo(double precioInf, double precioSup);
+
 }

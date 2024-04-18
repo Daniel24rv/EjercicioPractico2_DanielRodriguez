@@ -11,13 +11,13 @@ import com.tienda.dao.ReservaDao;
 @Service
 public class ReservaServiceImpl implements ReservaService {
 
-     @Autowired
-    private ReservaDao categoriaDao;
+    @Autowired
+    private ReservaDao productoDao;
 
     @Override
     @Transactional(readOnly = true)
-    public List<Reserva> getCategorias(boolean activos) {
-        var lista = categoriaDao.findAll();
+    public List<Reserva> getProductos(boolean activos) {
+        var lista = productoDao.findAll();
         if (activos) {
             lista.removeIf(e -> !e.isActivo());
         }
@@ -26,20 +26,37 @@ public class ReservaServiceImpl implements ReservaService {
 
     @Override
     @Transactional(readOnly = true)
-    public Reserva getCategoria(Reserva categoria) {
-        return categoriaDao.findById(categoria.getIdCategoria()).orElse(null);
+    public Reserva getProducto(Reserva producto) {
+        return productoDao.findById(producto.getIdProducto()).orElse(null);
     }
 
     @Override
     @Transactional
-    public void save(Reserva categoria) {
-        categoriaDao.save(categoria);
+    public void save(Reserva producto) {
+        productoDao.save(producto);
     }
 
     @Override
     @Transactional
-    public void delete(Reserva categoria) {
-        categoriaDao.delete(categoria);
+    public void delete(Reserva producto) {
+        productoDao.delete(producto);
     }
-    
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Reserva> findByPrecioBetweenOrderByDescripcion(double precioInf, double precioSup) {
+        return productoDao.findByPrecioBetweenOrderByDescripcion(precioInf, precioSup);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Reserva> metodoJPQL(double precioInf, double precioSup) {
+        return productoDao.metodoJPQL(precioInf, precioSup);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Reserva> metodoNativo(double precioInf, double precioSup) {
+        return productoDao.metodoNativo(precioInf, precioSup);
+    }
 }

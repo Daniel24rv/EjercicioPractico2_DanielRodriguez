@@ -2,7 +2,7 @@ package com.tienda.service.impl;
 
 import com.tienda.dao.FacturaDao;
 import com.tienda.dao.VentaDao;
-import com.tienda.domain.Producto;
+import com.tienda.domain.Reserva;
 import com.tienda.domain.Usuario;
 import com.tienda.domain.Factura;
 import com.tienda.domain.Item;
@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import com.tienda.dao.ProductoDao;
+import com.tienda.dao.ReservaDao;
 
 @Service
 public class ItemServiceImpl implements ItemService {
@@ -92,7 +92,7 @@ public class ItemServiceImpl implements ItemService {
     @Autowired
     private VentaDao ventaDao;
     @Autowired
-    private ProductoDao productoDao;
+    private ReservaDao productoDao;
  
     @Override
     public void facturar() {
@@ -121,7 +121,7 @@ public class ItemServiceImpl implements ItemService {
             Venta venta = new Venta(factura.getIdFactura(),
                     i.getIdProducto(), i.getPrecio(), i.getCantidad());
             ventaDao.save(venta);
-            Producto producto = productoDao.getReferenceById(i.getIdProducto());
+            Reserva producto = productoDao.getReferenceById(i.getIdProducto());
             producto.setExistencias(producto.getExistencias() - i.getCantidad());
             productoDao.save(producto);
             total += i.getPrecio() * i.getCantidad();

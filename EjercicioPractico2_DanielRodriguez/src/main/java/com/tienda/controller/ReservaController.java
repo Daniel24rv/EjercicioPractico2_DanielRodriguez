@@ -11,56 +11,67 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import com.tienda.service.EmpleadoService;
 import com.tienda.service.ReservaService;
 
 @Controller
-@RequestMapping("/categoria")
+@RequestMapping("/producto")
 public class ReservaController {
   
     @Autowired
-    private ReservaService categoriaService;
+    private ReservaService productoService;
+    @Autowired
+    private EmpleadoService categoriaService;
     
     @GetMapping("/listado")
     private String listado(Model model) {
+        var productos = productoService.getProductos(false);
+        model.addAttribute("productos", productos);
+        
         var categorias = categoriaService.getCategorias(false);
         model.addAttribute("categorias", categorias);
-        model.addAttribute("totalCategorias",categorias.size());
-        return "/categoria/listado";
+        
+        model.addAttribute("totalProductos",productos.size());
+        return "/producto/listado";
     }
     
      @GetMapping("/nuevo")
-    public String categoriaNuevo(Reserva categoria) {
-        return "/categoria/modifica";
+    public String productoNuevo(Reserva producto) {
+        return "/producto/modifica";
     }
 
     @Autowired
     private FirebaseStorageServiceImpl firebaseStorageService;
     
     @PostMapping("/guardar")
-    public String categoriaGuardar(Reserva categoria,
+    public String productoGuardar(Reserva producto,
             @RequestParam("imagenFile") MultipartFile imagenFile) {        
         if (!imagenFile.isEmpty()) {
-            categoriaService.save(categoria);
-            categoria.setRutaImagen(
+            productoService.save(producto);
+            producto.setRutaImagen(
                     firebaseStorageService.cargaImagen(
                             imagenFile, 
-                            "categoria", 
-                            categoria.getIdCategoria()));
+                            "producto", 
+                            producto.getIdProducto()));
         }
-        categoriaService.save(categoria);
-        return "redirect:/categoria/listado";
+        productoService.save(producto);
+        return "redirect:/producto/listado";
     }
 
-    @GetMapping("/eliminar/{idCategoria}")
-    public String categoriaEliminar(Reserva categoria) {
-        categoriaService.delete(categoria);
-        return "redirect:/categoria/listado";
+    @GetMapping("/eliminar/{idProducto}")
+    public String productoEliminar(Reserva producto) {
+        productoService.delete(producto);
+        return "redirect:/producto/listado";
     }
 
-    @GetMapping("/modificar/{idCategoria}")
-    public String categoriaModificar(Reserva categoria, Model model) {
-        categoria = categoriaService.getCategoria(categoria);
-        model.addAttribute("categoria", categoria);
-        return "/categoria/modifica";
+    @GetMapping("/modificar/{idProducto}")
+    public String productoModificar(Reserva producto, Model model) {
+        producto = productoService.getProducto(producto);
+        model.addAttribute("producto", producto);
+        
+        var categorias = categoriaService.getCategorias(false);
+        model.addAttribute("categorias", categorias);
+        
+        return "/producto/modifica";
     }   
 }
